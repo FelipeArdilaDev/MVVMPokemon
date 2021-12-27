@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.R
 import com.example.databinding.FragmentPokemonDetailBinding
 import com.example.viewmodels.RecyclerPokemonViewModel
@@ -30,7 +31,28 @@ class PokemonDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pokemon_detail, container, false)
+        _binding = FragmentPokemonDetailBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.itemDataSelected?.let { data ->
+            Glide.with(requireContext()).load(data.img).into(binding!!.img)
+            binding!!.tvName.text = data.name
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        fun newInstance(
+
+        ) = PokemonDetailFragment()
     }
 
 }
